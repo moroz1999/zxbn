@@ -1,6 +1,6 @@
 <?php
 include_once('zxbn.php');
-include_once('hype_classes.php');
+include_once('classes_hype.php');
 
 $banner = new Zxbn\HypeHtmlBanner();
 $banner->setCacheDir(sys_get_temp_dir());
