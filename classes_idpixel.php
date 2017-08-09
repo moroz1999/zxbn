@@ -9,6 +9,13 @@ class IdpixelHtmlBanner extends HtmlBanner
     protected $type = 'idpixel';
 }
 
+class IdpixelZxHtmlBanner extends HtmlBanner
+{
+    protected $rssUrl = 'http://idpixel.ru/rss/news.rss';
+    protected $limit = 5;
+    protected $type = 'idpixelZx';
+}
+
 class IdpixelTemplate
 {
     public function render($data)
@@ -97,11 +104,11 @@ class IdpixelTemplate
 		<body>
 		<div class="main">
 			<header class="header" role="banner">
-				<a href="//idpixel.retroscene.org"><img class="logo" src="//idpixel.ru/i/logo.png" /></a>
+				<a href="//idpixel.ru"><img class="logo" src="//idpixel.ru/i/logo.png" /></a>
 			</header>
 			<h1 class="heading"><a href="<?php echo $data['link']; ?>"><?php echo $data['title']; ?></a></h1>
             <?php if (!empty($data['image'])) {
-                echo '<a href="//idpixel.retroscene.org"><img class="imagetop" src="' . $data['image'] . '" /></a>';
+                echo '<a href="' . $data['link'] . '"><img class="imagetop" src="' . $data['image'] . '" /></a>';
             } ?>
 			<div class="content"><?php echo $data['text']; ?></div>
 			<div class="controls"><a class="button" href="<?php echo $data['link']; ?>">Читать статью</a></div>
@@ -114,4 +121,9 @@ class IdpixelTemplate
         ob_end_clean();
         return $content;
     }
+}
+
+class IdpixelZxTemplate extends IdpixelTemplate
+{
+
 }
