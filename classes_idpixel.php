@@ -4,21 +4,21 @@ namespace Zxbn;
 
 class IdpixelHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'http://idpixel.ru/rss/news_zx.rss';
+    protected $rssUrl = 'http://idpixel.ru/rss/news.rss';
     protected $limit = 5;
     protected $type = 'idpixel';
 }
 
 class IdpixelZxHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'http://idpixel.ru/rss/news.rss';
+    protected $rssUrl = 'http://idpixel.ru/rss/news_zx.rss';
     protected $limit = 5;
     protected $type = 'idpixelZx';
 }
 
 class IdpixelTemplate
 {
-    public function render($data)
+    public function render($data, $trackingLink)
     {
         ob_start();
 
@@ -36,18 +36,18 @@ class IdpixelTemplate
 					overflow: hidden;
 					font-size: 11px;
 					font-family: "Roboto Light", sans-serif;
-					line-height: 1.5;
+					line-height: 1.2;
 					color: #333;
 					position: relative;
 					background-color: #fff;
 				}
 
 				.imagetop {
-					max-width: 100%;
-					height: auto !important;
 					display: block;
-					float: none;
+					height: 140px;
 					margin: 0 auto 5px;
+					background-size: cover;
+					background-position: center;
 				}
 
 				.header {
@@ -86,32 +86,44 @@ class IdpixelTemplate
 					text-align: center;
 					background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 60%);
 					width: 100%;
-					padding-top: 30px;
+					padding-top: 20px;
 				}
 
 				.button {
 					font-size: 11px;
 					display: inline-block;
 					text-align: center;
-					padding: 10px;
+					padding: 5px 10px;
 					font-weight: normal;
 					line-height: 10px;
 					color: #282828;
 					background-color: #ffe04d;
+				}
+
+				.link_cover {
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					display: block;
 				}
 			</style>
 		</head>
 		<body>
 		<div class="main">
 			<header class="header" role="banner">
-				<a href="//idpixel.ru"><img class="logo" src="//idpixel.ru/i/logo.png" /></a>
+				<img class="logo" src="//idpixel.ru/i/logo.png" />
 			</header>
-			<h1 class="heading"><a href="<?php echo $data['link']; ?>"><?php echo $data['title']; ?></a></h1>
+			<h1 class="heading"><?php echo $data['title']; ?></h1>
             <?php if (!empty($data['image'])) {
-                echo '<a href="' . $data['link'] . '"><img class="imagetop" src="' . $data['image'] . '" /></a>';
+                echo '<div class="imagetop" style="background-image: url(\'' . $data['image'] . '\');" /></div>';
             } ?>
 			<div class="content"><?php echo $data['text']; ?></div>
-			<div class="controls"><a class="button" href="<?php echo $data['link']; ?>">Читать статью</a></div>
+			<div class="controls">
+				<div class="button">Читать статью</div>
+			</div>
+			<a href="<?php echo $trackingLink; echo $data['link']; ?>" class="link_cover"></a>
 		</div>
 		</body>
 		</html>

@@ -9,6 +9,21 @@ abstract class HtmlBanner
     protected $rssUrl = true;
     protected $limit = 5;
     protected $type;
+    protected $trackingLink;
+
+    /**
+     * @param mixed $trackingLink
+     */
+    public function setTrackingLink($trackingLink)
+    {
+        $trackingLink = filter_var($trackingLink, FILTER_SANITIZE_URL);
+        if (filter_var($trackingLink, FILTER_VALIDATE_URL)) {
+            $this->trackingLink = $trackingLink;
+        } else {
+            $this->trackingLink = '';
+        }
+
+    }
 
     /**
      * @param bool $useCache
@@ -30,6 +45,7 @@ abstract class HtmlBanner
     {
         $bannerNumber = rand(0, $this->limit);
         $htmlGenerator = new HtmlGenerator();
+        $htmlGenerator->setTrackingLink($this->trackingLink);
         $htmlGenerator->setType($this->type);
         $htmlGenerator->setCacheDir($this->cacheDir);
 
@@ -57,26 +73,29 @@ class RssParser
     {
         $data = [];
         if ($rss = file_get_contents($url)) {
-            $xml = simplexml_load_string($rss);
-            $xml->registerXPathNamespace('dc', 'http://purl.org/dc/elements/1.1/');
-            $number = 0;
-            foreach ($xml->channel->item as $item) {
-                $itemInfo = [];
-                if ($number > $limit) {
-                    break;
-                }
 
-                $itemInfo['title'] = $item->title;
-                $itemInfo['link'] = $item->link;
-                $itemInfo['image'] = '';
-                $itemInfo['text'] = $this->htmlToPlainText($item->description);
-                preg_match('/src="([^"]+)"/', $item->description, $matches);
-                if (isset($matches[1])) {
-                    $itemInfo['image'] = $matches[1];
-                }
+            libxml_use_internal_errors(true);
+            if ($xml = simplexml_load_string($rss)) {
+                $xml->registerXPathNamespace('dc', 'http://purl.org/dc/elements/1.1/');
+                $number = 0;
+                foreach ($xml->channel->item as $item) {
+                    $itemInfo = [];
+                    if ($number > $limit) {
+                        break;
+                    }
 
-                $number++;
-                $data[] = $itemInfo;
+                    $itemInfo['title'] = $item->title;
+                    $itemInfo['link'] = $item->link;
+                    $itemInfo['image'] = '';
+                    $itemInfo['text'] = $this->htmlToPlainText($item->description);
+                    preg_match('/src="([^"]+)"/', $item->description, $matches);
+                    if (isset($matches[1])) {
+                        $itemInfo['image'] = $matches[1];
+                    }
+
+                    $number++;
+                    $data[] = $itemInfo;
+                }
             }
         }
         return $data;
@@ -103,9 +122,18 @@ class RssParser
 
 class HtmlGenerator
 {
+    protected $trackingLink;
     protected $type;
     protected $data;
     protected $cacheDir;
+
+    /**
+     * @param mixed $trackingLink
+     */
+    public function setTrackingLink($trackingLink)
+    {
+        $this->trackingLink = $trackingLink;
+    }
 
     /**
      * @param mixed $type
@@ -142,7 +170,7 @@ class HtmlGenerator
             $className = 'Zxbn\\' . ucfirst($this->type) . 'Template';
             /** @var Template $template */
             $template = new $className();
-            if ($content = $template->render($info)) {
+            if ($content = $template->render($info, $this->trackingLink)) {
                 file_put_contents($this->getCachePath($number), $content);
             }
         }

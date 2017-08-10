@@ -11,7 +11,7 @@ class HypeHtmlBanner extends HtmlBanner
 
 class HypeTemplate
 {
-    public function render($data)
+    public function render($data, $trackingLink)
     {
         ob_start();
 
@@ -52,7 +52,7 @@ class HypeTemplate
 					text-align: center;
 				}
 
-				h1, h1 a {
+				h1 {
 					text-decoration: underline;
 					color: #275ec2;
 					font-size: 20px;
@@ -86,19 +86,30 @@ class HypeTemplate
 					text-decoration: none;
 					background: linear-gradient(to bottom, #66cfff, #2abcfe);
 				}
+
+				.link_cover {
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					display: block;
+				}
 			</style>
 		</head>
 		<body>
 		<div class="main">
 			<header id="header" role="banner">
-				<a href="http://hype.retroscene.org"><img src="http://hype.retroscene.org/rnd-logo.php" /></a>
+				<img src="http://hype.retroscene.org/rnd-logo.php" />
 			</header>
-			<h1 class="heading"><a href="<?php echo $data['link']; ?>"><?php echo $data['title']; ?></a></h1>
+			<h1 class="heading"><?php echo $data['title']; ?></h1>
             <?php if (!empty($data['image'])) {
-                echo '<a href="http://hype.retroscene.org"><img class="imagetop" src="' . $data['image'] . '" /></a>';
+                echo '<img class="imagetop" src="' . $data['image'] . '" />';
             } ?>
 			<div class="content"><?php echo $data['text']; ?></div>
-			<div class="controls"><a class="button" href="<?php echo $data['link']; ?>">Читать статью</a></div>
+			<div class="controls"><span class="button">Читать статью</span></div>
+			<a href="<?php echo $trackingLink;
+            echo $data['link']; ?>" class="link_cover"></a>
 		</div>
 		</body>
 		</html>
