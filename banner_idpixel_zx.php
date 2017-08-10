@@ -8,7 +8,6 @@ if (isset($_GET['reset'])) {
     $banner->setUseCache(false);
 }
 if (isset($_GET['link'])) {
-    $link = $_GET['link'];
     $banner->setTrackingLink($_GET['link']);
 }
 echo $banner->getHtml();
