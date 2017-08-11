@@ -2,8 +2,10 @@
 include_once('zxbn.php');
 include_once('classes_idpixel.php');
 
+$cacheDir = dirname(__FILE__) . '/cache/';
+
 $banner = new Zxbn\IdpixelZxHtmlBanner();
-$banner->setCacheDir(sys_get_temp_dir());
+$banner->setCacheDir($cacheDir);
 if (isset($_GET['reset'])) {
     $banner->setUseCache(false);
 }

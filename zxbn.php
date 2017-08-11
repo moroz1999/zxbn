@@ -72,7 +72,13 @@ class RssParser
     public function getData($url, $limit)
     {
         $data = [];
-        if ($rss = file_get_contents($url)) {
+
+        $curl_handle = curl_init();
+        curl_setopt($curl_handle, CURLOPT_URL, $url);
+        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
+        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+
+        if ($rss = curl_exec($curl_handle)) {
 
             libxml_use_internal_errors(true);
             if ($xml = simplexml_load_string($rss)) {
@@ -98,6 +104,7 @@ class RssParser
                 }
             }
         }
+        curl_close($curl_handle);
         return $data;
     }
 
@@ -149,6 +156,9 @@ class HtmlGenerator
     public function setCacheDir($cacheDir)
     {
         $this->cacheDir = $cacheDir;
+        if (!is_dir($this->cacheDir)) {
+            mkdir($this->cacheDir);
+        }
     }
 
     /**
@@ -161,7 +171,7 @@ class HtmlGenerator
 
     protected function getCachePath($number)
     {
-        return $this->cacheDir . '/' . $this->type . '.bannercache.' . $number . '.html';
+        return $this->cacheDir . $this->type . '.bannercache.' . $number . '.html';
     }
 
     public function generate()
