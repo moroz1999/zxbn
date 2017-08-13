@@ -43,7 +43,7 @@ abstract class HtmlBanner
 
     protected function getBannerNumber()
     {
-        return rand(0, $this->limit);
+        return rand(0, $this->limit - 1);
     }
 
     public function getHtml()
