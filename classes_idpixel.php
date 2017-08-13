@@ -101,6 +101,7 @@ class IdpixelTemplate
 				}
 
 				.link_cover {
+					cursor: pointer;
 					position: absolute;
 					top: 0;
 					left: 0;
@@ -123,7 +124,7 @@ class IdpixelTemplate
 			<div class="controls">
 				<div class="button">Читать статью</div>
 			</div>
-			<a href="<?php echo $trackingLink; echo $data['link']; ?>" class="link_cover"></a>
+			<div onclick="window.parent.location.href='<?php echo $trackingLink; echo $data['link']; ?>'" class="link_cover"></div>
 		</div>
 		</body>
 		</html>
