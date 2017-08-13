@@ -10,6 +10,7 @@ abstract class HtmlBanner
     protected $limit = 5;
     protected $type;
     protected $trackingLink;
+    protected $generatorType;
 
     /**
      * @param mixed $trackingLink
@@ -22,7 +23,6 @@ abstract class HtmlBanner
         } else {
             $this->trackingLink = '';
         }
-
     }
 
     /**
@@ -41,10 +41,20 @@ abstract class HtmlBanner
         $this->cacheDir = $cacheDir;
     }
 
+    protected function getBannerNumber()
+    {
+        return rand(0, $this->limit);
+    }
+
     public function getHtml()
     {
-        $bannerNumber = rand(0, $this->limit);
-        $htmlGenerator = new HtmlGenerator();
+        $bannerNumber = $this->getBannerNumber();
+        if ($this->generatorType !== null) {
+            $className = 'Zxbn\\' . ucfirst($this->generatorType) . 'HtmlGenerator';
+            $htmlGenerator = new $className();
+        } else {
+            $htmlGenerator = new HtmlGenerator();
+        }
         $htmlGenerator->setTrackingLink($this->trackingLink);
         $htmlGenerator->setType($this->type);
         $htmlGenerator->setCacheDir($this->cacheDir);
@@ -62,13 +72,25 @@ abstract class HtmlBanner
     }
 }
 
+abstract class GroupedHtmlBanner extends HtmlBanner
+{
+    protected $generatorType = 'grouped';
+
+    protected function getBannerNumber()
+    {
+        return 0;
+    }
+}
+
 abstract class Template
 {
-    abstract public function render($data);
+    abstract public function render($data, $trackingLink);
 }
 
 class RssParser
 {
+    const namespaceDc = 'http://purl.org/dc/elements/1.1/';
+
     public function getData($url, $limit)
     {
         $data = [];
@@ -82,16 +104,24 @@ class RssParser
 
             libxml_use_internal_errors(true);
             if ($xml = simplexml_load_string($rss)) {
-                $xml->registerXPathNamespace('dc', 'http://purl.org/dc/elements/1.1/');
+                $xml->registerXPathNamespace('dc', self::namespaceDc);
                 $number = 0;
                 foreach ($xml->channel->item as $item) {
                     $itemInfo = [];
-                    if ($number > $limit) {
+                    if ($number >= $limit) {
                         break;
                     }
 
-                    $itemInfo['title'] = $item->title;
-                    $itemInfo['link'] = $item->link;
+                    $itemInfo['title'] = trim($item->title);
+                    $itemInfo['link'] = trim($item->link);
+                    if (stripos($itemInfo['link'], '?') === false) {
+                        $itemInfo['link'] .= '?';
+                    } elseif (stripos($itemInfo['link'], '&') === false) {
+                        $itemInfo['link'] .= '&';
+                    }
+                    $itemInfo['link'] .= 'utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn';
+                    $itemInfo['category'] = trim($item->category);
+                    $itemInfo['creator'] = trim($item->children(self::namespaceDc)->creator);
                     $itemInfo['image'] = '';
                     $itemInfo['text'] = $this->htmlToPlainText($item->description);
                     preg_match('/src="([^"]+)"/', $item->description, $matches);
@@ -209,5 +239,18 @@ class HtmlGenerator
             }
         }
         return $cacheValid;
+    }
+}
+
+class GroupedHtmlGenerator extends HtmlGenerator
+{
+    public function generate()
+    {
+        $className = 'Zxbn\\' . ucfirst($this->type) . 'Template';
+        /** @var Template $template */
+        $template = new $className();
+        if ($content = $template->render($this->data, $this->trackingLink)) {
+            file_put_contents($this->getCachePath(0), $content);
+        }
     }
 }
