@@ -109,7 +109,7 @@ class HypeTemplate
 			<div class="content"><?php echo $data['text']; ?></div>
 			<div class="controls"><span class="button">Читать статью</span></div>
 			<a href="<?php echo $trackingLink . $data['link']; ?>"
-			   onclick="window.parent.location.href='<?php echo $trackingLink . $data['link']; ?>'"
+			   onclick="window.open('<?php echo $trackingLink . $data['link']; ?>', '_blank');return false;"
 			   class="link_cover"></a>
 		</div>
 		</body>

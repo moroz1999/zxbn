@@ -93,7 +93,7 @@ class ZxpkruTemplate
 			<header class="header" role="banner">
 				<a class="logo_link"
 				   href="http://zx-pk.ru/forum.php"
-				   onclick="window.parent.location.href='http://zx-pk.ru/forum.php?utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn'"
+				   onclick="window.open('http://zx-pk.ru/forum.php?utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn', '_blank');return false;"
 				><img class="logo" src="http://zx-pk.ru/images/styles/asdialup/misc/zxpkru_logo_ani.gif" /></a>
 			</header>
 			<div class="centerblock">
@@ -102,7 +102,7 @@ class ZxpkruTemplate
                 foreach ($data as $info) {
                     ?>
 					<a class="item"
-					   onclick="window.parent.location.href='<?php echo $trackingLink . $info['link']; ?>'"
+					   onclick="window.open('<?php echo $trackingLink . $info['link']; ?>', '_blank');return false;"
 					   href="<?php echo $trackingLink . $info['link']; ?>">
                         <?php echo $info['title']; ?></a>
                     <?php
@@ -225,7 +225,7 @@ class ZxpkruMainTemplate
 			<header class="header" role="banner">
 				<a class="logo_link"
 				   href="http://zx-pk.ru/forum.php"
-				   onclick="window.parent.location.href='http://zx-pk.ru/forum.php?utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn'"
+				   onclick="window.open('http://zx-pk.ru/forum.php?utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn', '_blank');return false;"
 				><img class="logo" src="http://zx-pk.ru/images/styles/asdialup/misc/zxpkru_logo_ani.gif" /></a>
 			</header>
 			<div class="centerblock">
@@ -239,7 +239,8 @@ class ZxpkruMainTemplate
 					<div class="button">Подробнее</div>
 				</div>
 				<a href="<?php echo $trackingLink . $data['link']; ?>"
-				   onclick="window.parent.location.href='<?php echo $trackingLink . $data['link']; ?>'" class="link_cover"></a>
+				   onclick="window.open('<?php echo $trackingLink . $data['link']; ?>', '_blank');return false;"
+				   class="link_cover"></a>
 			</div>
 		</div>
 		</body>

@@ -126,7 +126,7 @@ class IdpixelTemplate
 			</div>
 			<a
 				href="<?php echo $trackingLink . $data['link']; ?>"
-				onclick="window.parent.location.href='<?php echo $trackingLink . $data['link']; ?>'" class="link_cover"></a>
+				onclick="window.open('<?php echo $trackingLink . $data['link']; ?>', '_blank');return false;" class="link_cover"></a>
 		</div>
 		</body>
 		</html>
