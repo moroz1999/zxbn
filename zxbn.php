@@ -93,7 +93,7 @@ class RssParser
 
     public function getData($url, $limit)
     {
-        $data = [];
+        $data = array();
 
         $curl_handle = curl_init();
         curl_setopt($curl_handle, CURLOPT_URL, $url);
@@ -107,7 +107,7 @@ class RssParser
                 $xml->registerXPathNamespace('dc', self::namespaceDc);
                 $number = 0;
                 foreach ($xml->channel->item as $item) {
-                    $itemInfo = [];
+                    $itemInfo = array();
                     if ($number >= $limit) {
                         break;
                     }
