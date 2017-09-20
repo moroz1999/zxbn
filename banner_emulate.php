@@ -1,6 +1,6 @@
 <?php
-include_once('zxbn.php');
-include_once('classes_emulate.php');
+include_once('include/zxbn/zxbn.php');
+include_once('include/zxbn/classes_emulate.php');
 
 $cacheDir = dirname(__FILE__) . '/cache/';
 

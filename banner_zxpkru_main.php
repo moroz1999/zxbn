@@ -1,6 +1,6 @@
 <?php
-include_once('zxbn.php');
-include_once('classes_zxpkru.php');
+include_once('include/zxbn/zxbn.php');
+include_once('include/zxbn/classes_zxpkru.php');
 
 $cacheDir = dirname(__FILE__) . '/cache/';
 

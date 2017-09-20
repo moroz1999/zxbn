@@ -1,6 +1,6 @@
 <?php
-include_once('zxbn.php');
-include_once('classes_idpixel.php');
+include_once('include/zxbn/zxbn.php');
+include_once('include/zxbn/classes_idpixel.php');
 
 $cacheDir = dirname(__FILE__) . '/cache/';
 
