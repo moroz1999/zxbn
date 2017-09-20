@@ -1,6 +1,6 @@
 <?php
-include_once('zxbn.php');
-include_once('classes_hype.php');
+include_once('include/zxbn/zxbn.php');
+include_once('include/zxbn/classes_hype.php');
 
 $cacheDir = sys_get_temp_dir() . '/cache/';
 
