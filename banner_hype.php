@@ -2,7 +2,7 @@
 include_once('zxbn.php');
 include_once('classes_hype.php');
 
-$cacheDir = dirname(__FILE__) . '/cache/';
+$cacheDir = sys_get_temp_dir() . '/cache/';
 
 $banner = new Zxbn\HypeHtmlBanner();
 $banner->setCacheDir($cacheDir);
