@@ -90,6 +90,7 @@ abstract class Template
 class RssParser
 {
     const namespaceDc = 'http://purl.org/dc/elements/1.1/';
+    const namespaceItunes = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
 
     public function getData($url, $limit)
     {
@@ -107,6 +108,7 @@ class RssParser
             libxml_use_internal_errors(true);
             if ($xml = simplexml_load_string($rss)) {
                 $xml->registerXPathNamespace('dc', self::namespaceDc);
+                $xml->registerXPathNamespace('itunes', self::namespaceItunes);
                 $number = 0;
                 foreach ($xml->channel->item as $item) {
                     $itemInfo = array();
@@ -124,11 +126,16 @@ class RssParser
                     $itemInfo['link'] .= 'utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn';
                     $itemInfo['category'] = trim($item->category);
                     $itemInfo['creator'] = trim($item->children(self::namespaceDc)->creator);
-                    $itemInfo['image'] = '';
                     $itemInfo['text'] = $this->htmlToPlainText($item->description);
-                    preg_match('/src="([^"]+)"/', $item->description, $matches);
-                    if (isset($matches[1])) {
-                        $itemInfo['image'] = $matches[1];
+                    $itemInfo['image'] = '';
+                    if (isset($item->children(self::namespaceItunes)->image)){
+                        $itemInfo['image'] = trim($item->children(self::namespaceItunes)->image->attributes()->href);
+                    }
+                    if (!$itemInfo['image']){
+                        preg_match('/src="([^"]+)"/', $item->description, $matches);
+                        if (isset($matches[1])) {
+                            $itemInfo['image'] = $matches[1];
+                        }
                     }
 
                     $number++;

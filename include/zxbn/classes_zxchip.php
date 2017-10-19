@@ -56,6 +56,13 @@ class ZxchipTemplate
 					-moz-filter: blur(15px);
 				}
 
+				#pic1 img,
+				#pic2 img {
+					width: 200px;
+					height: 200px;
+					display: block;
+				}
+
 				#num {
 					max-width: 240px;
 					text-align: center;
@@ -109,8 +116,13 @@ class ZxchipTemplate
 		<body>
 		<div width="240px" height="320px" frameborder="0" style="border: none;">
 			<div id="top">
-				<div id="pic2"><img src="zxchip_images/slice4.png"></div>
-				<div id="pic1"><img src="zxchip_images/slice4.png"></div>
+                <?php if ($data['image']) { ?>
+					<div id="pic2"><img src="<?php echo $data['image']; ?>"></div>
+					<div id="pic1"><img src="<?php echo $data['image']; ?>"></div>
+                <?php } else { ?>
+					<div id="pic2"><img src="zxchip_images/slice4.png"></div>
+					<div id="pic1"><img src="zxchip_images/slice4.png"></div>
+                <?php } ?>
 				<div id="num">zx-chip <?php echo $data['number']; ?></div>
 				<div id="named"><?php echo $data['title']; ?></div>
 				<a
