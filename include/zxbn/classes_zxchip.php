@@ -14,7 +14,11 @@ class ZxchipTemplate
     public function render($data, $trackingLink)
     {
         ob_start();
-
+        $matches = [];
+        preg_match('#\/([0-9]*)\?#', $data['link'], $matches);
+        if (isset($matches[1])) {
+            $data['number'] = $matches[1];
+        }
         ?>
 		<!doctype html>
 		<html>
@@ -107,7 +111,7 @@ class ZxchipTemplate
 			<div id="top">
 				<div id="pic2"><img src="zxchip_images/slice4.png"></div>
 				<div id="pic1"><img src="zxchip_images/slice4.png"></div>
-				<div id="num">zx-chip 34</div>
+				<div id="num">zx-chip <?php echo $data['number']; ?></div>
 				<div id="named"><?php echo $data['title']; ?></div>
 				<a
 					href="<?php echo $trackingLink . $data['link']; ?>"
