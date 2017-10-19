@@ -95,12 +95,14 @@ class RssParser
     {
         $data = array();
 
-        $curl_handle = curl_init();
-        curl_setopt($curl_handle, CURLOPT_URL, $url);
-        curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 2);
-        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+        $curlHandle = curl_init();
+        curl_setopt($curlHandle, CURLOPT_URL, $url);
+        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 2);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
 
-        if ($rss = curl_exec($curl_handle)) {
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 0);
+        if ($rss = curl_exec($curlHandle)) {
 
             libxml_use_internal_errors(true);
             if ($xml = simplexml_load_string($rss)) {
@@ -134,7 +136,7 @@ class RssParser
                 }
             }
         }
-        curl_close($curl_handle);
+        curl_close($curlHandle);
         return $data;
     }
 
