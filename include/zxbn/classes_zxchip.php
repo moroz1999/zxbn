@@ -28,6 +28,7 @@ class ZxchipTemplate
 			<style type="text/css">
 				body {
 					margin: 0;
+					background: #fff;
 				}
 
 				#top {
