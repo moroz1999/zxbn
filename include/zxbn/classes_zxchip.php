@@ -53,8 +53,9 @@ class ZxchipTemplate
 					width: 200px;
 					height: 200px;
 					align-content: center;
-					-webkit-filter: blur(15px);
-					-moz-filter: blur(15px);
+					opacity: 0.7;
+					-webkit-filter: blur(10px);
+					-moz-filter: blur(10px);
 				}
 
 				#pic1 img,
