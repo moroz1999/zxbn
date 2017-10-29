@@ -91,6 +91,7 @@ class RssParser
 {
     const namespaceDc = 'http://purl.org/dc/elements/1.1/';
     const namespaceItunes = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
+    const namespaceContent = 'http://purl.org/rss/1.0/modules/content/';
 
     public function getData($url, $limit)
     {
@@ -128,13 +129,23 @@ class RssParser
                     $itemInfo['creator'] = trim($item->children(self::namespaceDc)->creator);
                     $itemInfo['text'] = $this->htmlToPlainText($item->description);
                     $itemInfo['image'] = '';
-                    if (isset($item->children(self::namespaceItunes)->image)){
+                    if (isset($item->children(self::namespaceItunes)->image)) {
                         $itemInfo['image'] = trim($item->children(self::namespaceItunes)->image->attributes()->href);
                     }
-                    if (!$itemInfo['image']){
-                        preg_match('/src="([^"]+)"/', $item->description, $matches);
-                        if (isset($matches[1])) {
-                            $itemInfo['image'] = $matches[1];
+                    if (!$itemInfo['image']) {
+                        preg_match('/<img(.*)src="(.*)"/', $item->description, $matches);
+                        if (isset($matches[2])) {
+                            $itemInfo['image'] = $matches[2];
+                        }
+                    }
+                    if (!$itemInfo['image']) {
+                        if (isset($item->children(self::namespaceContent)->encoded)) {
+                            $html = trim($item->children(self::namespaceContent)->encoded);
+
+                            preg_match('/<img(.*)src="(.*)"/', $html, $matches);
+                            if (isset($matches[2])) {
+                                $itemInfo['image'] = $matches[2];
+                            }
                         }
                     }
 
@@ -152,7 +163,6 @@ class RssParser
         $result = $src;
         $result = html_entity_decode($result, ENT_QUOTES);
         $result = preg_replace('/<style([\s\S]*?)<\/style>/', '', $result); // remove stylesheet
-        $result = preg_replace('/[\xA0]*/', '', $result);
         $result = preg_replace('#[\n\r\t]#', "", $result);
         $result = preg_replace('#[\s]+#', " ", $result);
         $result = preg_replace('#(</li>|</div>|</td>|</tr>|<br />|<br/>|<br>)#', "$1\n", $result);
