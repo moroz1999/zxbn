@@ -4,7 +4,7 @@ namespace Zxbn;
 
 class ZxchipHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'https://podster.fm/rss.xml?pid=263';
+    protected $rssUrl = 'http://zxchip.ru/feed/podcast/';
     protected $limit = 3;
     protected $type = 'zxchip';
 }
