@@ -7,6 +7,22 @@ class ZxchipHtmlBanner extends HtmlBanner
     protected $rssUrl = 'http://zxchip.ru/feed/podcast/';
     protected $limit = 3;
     protected $type = 'zxchip';
+    protected $parserType = '\Zxbn\ZxchipRssParser';
+
+}
+
+class ZxchipRssParser extends RssParser implements RssImageParser
+{
+    public function getImageUrl($channelItemXml)
+    {
+        $html = trim($channelItemXml->children(self::namespaceContent)->encoded);
+
+        preg_match('/<a href="(.*)" (target="_blank")* (rel="noopener")*>Episode/', $html, $matches);
+        if (isset($matches[1])) {
+            return $matches[1];
+        }
+        return false;
+    }
 }
 
 class ZxchipTemplate

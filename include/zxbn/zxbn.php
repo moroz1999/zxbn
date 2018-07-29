@@ -10,6 +10,7 @@ abstract class HtmlBanner
     protected $limit = 5;
     protected $type;
     protected $trackingLink;
+    protected $parserType;
     protected $generatorType;
 
     /**
@@ -61,7 +62,14 @@ abstract class HtmlBanner
 
         if (!$this->useCache || !$htmlGenerator->isCacheValid($bannerNumber)) {
             if ($this->rssUrl) {
-                $rssParser = new RssParser();
+
+                if ($this->parserType !== null) {
+                    $className = $this->parserType;
+                    $rssParser = new $className();
+                } else {
+                    $rssParser = new RssParser();
+                }
+
                 if ($data = $rssParser->getData($this->rssUrl, $this->limit)) {
                     $htmlGenerator->setData($data);
                     $htmlGenerator->generate();
@@ -129,22 +137,26 @@ class RssParser
                     $itemInfo['creator'] = trim($item->children(self::namespaceDc)->creator);
                     $itemInfo['text'] = $this->htmlToPlainText($item->description);
                     $itemInfo['image'] = '';
-                    if (isset($item->children(self::namespaceItunes)->image)) {
-                        $itemInfo['image'] = trim($item->children(self::namespaceItunes)->image->attributes()->href);
-                    }
-                    if (!$itemInfo['image']) {
-                        preg_match('/<img(.*)src="(.*)"/', $item->description, $matches);
-                        if (isset($matches[2])) {
-                            $itemInfo['image'] = $matches[2];
+                    if ($this instanceof RssImageParser) {
+                        $itemInfo['image'] = $this->getImageUrl($item);
+                    } else {
+                        if (isset($item->children(self::namespaceItunes)->image)) {
+                            $itemInfo['image'] = trim($item->children(self::namespaceItunes)->image->attributes()->href);
                         }
-                    }
-                    if (!$itemInfo['image']) {
-                        if (isset($item->children(self::namespaceContent)->encoded)) {
-                            $html = trim($item->children(self::namespaceContent)->encoded);
-
-                            preg_match('/<img(.*)src="(.*)"/', $html, $matches);
+                        if (!$itemInfo['image']) {
+                            preg_match('/<img(.*)src="(.*)"/', $item->description, $matches);
                             if (isset($matches[2])) {
                                 $itemInfo['image'] = $matches[2];
+                            }
+                        }
+                        if (!$itemInfo['image']) {
+                            if (isset($item->children(self::namespaceContent)->encoded)) {
+                                $html = trim($item->children(self::namespaceContent)->encoded);
+
+                                preg_match('/<img(.*)src="(.*)"/', $html, $matches);
+                                if (isset($matches[2])) {
+                                    $itemInfo['image'] = $matches[2];
+                                }
                             }
                         }
                     }
@@ -174,6 +186,11 @@ class RssParser
         return $result;
     }
 
+}
+
+interface RssImageParser
+{
+    public function getImageUrl($channelItemXml);
 }
 
 class HtmlGenerator
