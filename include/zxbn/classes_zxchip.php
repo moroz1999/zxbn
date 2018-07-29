@@ -147,7 +147,7 @@ class ZxchipTemplate
 					href="<?php echo $trackingLink . $data['link']; ?>"
 					onclick="window.open('<?php echo $trackingLink . $data['link']; ?>', '_blank');return false;" class="link_cover"></a>
 			</div>
-			<a href="<?php echo $trackingLink ?>https://podster.fm/rss.xml?pid=263"><img id="rss" src="zxchip_images/slice1.png"></a>
+			<a href="<?php echo $trackingLink ?>http://zxchip.ru/feed/podcast/"><img id="rss" src="zxchip_images/slice1.png"></a>
 			<a href="<?php echo $trackingLink ?>https://vk.com/zxchip"><img id="vk" src="zxchip_images/slice2.png"></a>
 			<a href="<?php echo $trackingLink ?>https://t.me/zxchip"><img id="tg" src="zxchip_images/slice3.png"></a>
 
