@@ -129,6 +129,32 @@ abstract class HtmlParser extends Downloader implements Parser
         return false;
     }
 
+    protected function getXpath($string)
+    {
+        if ($html = $this->getHtmlDocument($string)) {
+            $xPath = new \DOMXPath($html);
+            return $xPath;
+        }
+        return false;
+    }
+
+    protected function getHtmlDocument($string)
+    {
+        if ($string) {
+            $dom = new \DOMDocument;
+            $dom->strictErrorChecking = false;
+            $dom->encoding = 'UTF-8';
+            $dom->recover = true;
+            $dom->substituteEntities = true;
+            $dom->strictErrorChecking = false;
+            $dom->formatOutput = false;
+            @$dom->loadHTML('<?xml version="1.0" encoding="UTF-8"?>' . $string);
+            $dom->normalizeDocument();
+            return $dom;
+        }
+        return false;
+    }
+
 }
 
 class RssParser extends Downloader implements Parser

@@ -14,7 +14,39 @@ class IrnParser extends HtmlParser
 {
     public function parseHtml($html)
     {
-        $data = false;
+        $data = [];
+        if ($xPath = $this->getXpath($html)) {
+            $postNodes = $xPath->query("//div[contains(@itemtype,'http://schema.org/BlogPosting')]");
+            if ($postNodes->length) {
+                foreach ($postNodes as $postNode) {
+                    $itemInfo = [
+                        'title' => '',
+                        'image' => '',
+                        'text' => '',
+                        'link' => '',
+                    ];
+                    if ($h3Nodes = $xPath->query(".//h3[contains(@class, 'post-title')]", $postNode)) {
+                        if ($h3Node = $h3Nodes->item(0)) {
+                            $itemInfo['title'] = $h3Node->textContent;
+                        }
+                    }
+                    if ($imgNodes = $xPath->query(".//div[contains(@class, 'post-body')]/div[contains(@class, 'separator')]/a/img", $postNode)) {
+                        $imgNode = $imgNodes->item(0);
+                        $itemInfo['image'] = $imgNode->getAttribute('src');
+                    }
+                    if ($contentNodes = $xPath->query(".//div[contains(@class, 'post-body')]", $postNode)) {
+                        $contentNode = $contentNodes->item(0);
+                        $itemInfo['text'] = $contentNode->textContent;
+                    }
+                    if ($aNodes = $xPath->query(".//div[contains(@class, 'jump-link')]/a", $postNode)) {
+                        $aNode = $aNodes->item(0);
+                        $itemInfo['link'] = $aNode->getAttribute('href');
+                    }
+                    $data[] = $itemInfo;
+                }
+            }
+        }
+        return $data;
     }
 }
 
