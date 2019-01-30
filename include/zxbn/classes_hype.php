@@ -19,7 +19,7 @@ class HypeTemplate
 		<!DOCTYPE HTML>
 		<html>
 		<head>
-			<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+			<link href='//fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 			<style>
 				html, body, .main {
 					width: 240px;

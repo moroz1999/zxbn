@@ -4,7 +4,7 @@ namespace Zxbn;
 
 class EmulateHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'http://emulate.su/feed/';
+    protected $rssUrl = 'https://emulate.su/feed/';
     protected $limit = 5;
     protected $type = 'emulate';
 }
@@ -74,6 +74,8 @@ class EmulateTemplate
 				}
 
 				.heading {
+					margin-left: 5px;
+					margin-right: 5px;
 					margin-bottom: 5px;
 				}
 
@@ -100,13 +102,16 @@ class EmulateTemplate
 					bottom: 0;
 					display: block;
 				}
+				.content {
+					padding: 0 5px;
+				}
 			</style>
 		</head>
 		<body>
 		<div class="main">
 			<header class="header" role="banner">
-				<img class="logo" src="http://emulate.su/wp-content/uploads/2017/01/cropped-emulate-su-logo.png" />
-				<h1 class="site-title"><a href="http://emulate.su/" rel="home">EMULATE.SU</a></h1>
+				<img class="logo" src="//emulate.su/wp-content/uploads/2017/01/cropped-emulate-su-logo.png" />
+				<h1 class="site-title"><a href="//emulate.su/" rel="home">EMULATE.SU</a></h1>
 				<div class="site-description">Добрые видеоигры!</div>
 			</header>
 			<h1 class="heading"><?php echo $data['title']; ?></h1>

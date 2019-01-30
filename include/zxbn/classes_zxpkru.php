@@ -4,14 +4,14 @@ namespace Zxbn;
 
 class ZxpkruMainHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'http://zx-pk.ru/external.php?do=rss&type=newcontent&sectionid=1&days=120&count=10';
-    protected $limit = 5;
+    protected $rssUrl = 'https://zx-pk.ru/external.php?do=rss&type=newcontent&sectionid=1&days=120&count=10';
+    protected $limit = 1;
     protected $type = 'zxpkruMain';
 }
 
 class ZxpkruHtmlBanner extends GroupedHtmlBanner
 {
-    protected $rssUrl = 'http://zx-pk.ru/external.php?type=RSS2&forumids=5,10,23,21,17,11,12,14,26,70,71,73,69,74,92,13,8,9,16';
+    protected $rssUrl = 'https://zx-pk.ru/external.php?type=RSS2&forumids=5,10,23,21,17,11,12,14,26,70,71,73,69,74,92,13,8,9,16';
     protected $limit = 10;
     protected $type = 'zxpkru';
 }
@@ -72,7 +72,7 @@ class ZxpkruTemplate
 				}
 
 				.item {
-					background: #F6F6F6 url('http://zx-pk.ru/images/icons/icon1.png') 3px center no-repeat;
+					background: #F6F6F6 url('//zx-pk.ru/images/icons/icon1.png') 3px center no-repeat;
 					border: 1px solid rgb(255, 255, 255);
 					display: block;
 					color: inherit;
@@ -92,9 +92,9 @@ class ZxpkruTemplate
 		<div class="main">
 			<header class="header" role="banner">
 				<a class="logo_link"
-				   href="http://zx-pk.ru/forum.php"
-				   onclick="window.open('http://zx-pk.ru/forum.php?utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn', '_blank');return false;"
-				><img class="logo" src="http://zx-pk.ru/images/styles/asdialup/misc/zxpkru_logo_ani.gif" /></a>
+				   href="//zx-pk.ru/forum.php"
+				   onclick="window.open('//zx-pk.ru/forum.php?utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn', '_blank');return false;"
+				><img class="logo" src="//zx-pk.ru/images/styles/asdialup/misc/zxpkru_logo_ani.gif" /></a>
 			</header>
 			<div class="centerblock">
 				<div class="toptext">Новые топики</div>
@@ -206,7 +206,7 @@ class ZxpkruMainTemplate
 					display: inline-block;
 					text-align: center;
 					padding: 0 20px 0 0;
-					background: url('http://zx-pk.ru/images/cms/read_more-right.png') right center no-repeat;
+					background: url('//zx-pk.ru/images/cms/read_more-right.png') right center no-repeat;
 				}
 
 				.link_cover {
@@ -224,9 +224,9 @@ class ZxpkruMainTemplate
 		<div class="main">
 			<header class="header" role="banner">
 				<a class="logo_link"
-				   href="http://zx-pk.ru/forum.php"
-				   onclick="window.open('http://zx-pk.ru/forum.php?utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn', '_blank');return false;"
-				><img class="logo" src="http://zx-pk.ru/images/styles/asdialup/misc/zxpkru_logo_ani.gif" /></a>
+				   href="//zx-pk.ru/forum.php"
+				   onclick="window.open('//zx-pk.ru/forum.php?utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn', '_blank');return false;"
+				><img class="logo" src="//zx-pk.ru/images/styles/asdialup/misc/zxpkru_logo_ani.gif" /></a>
 			</header>
 			<div class="centerblock">
 				<!--				<div class="toptext">Новые топики</div>-->
