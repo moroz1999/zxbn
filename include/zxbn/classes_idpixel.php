@@ -114,7 +114,7 @@ class IdpixelTemplate
 		<body>
 		<div class="main">
 			<header class="header" role="banner">
-				<img class="logo" src="//idpixel.ru/i/logo.png" />
+				<img class="logo" src="http://idpixel.ru/i/logo.png" />
 			</header>
 			<h1 class="heading"><?php echo $data['title']; ?></h1>
             <?php if (!empty($data['image'])) {
