@@ -5,7 +5,7 @@ namespace Zxbn;
 class ZxpkruMainHtmlBanner extends HtmlBanner
 {
     protected $rssUrl = 'https://zx-pk.ru/external.php?do=rss&type=newcontent&sectionid=1&days=120&count=10';
-    protected $limit = 1;
+    protected $limit = 5;
     protected $type = 'zxpkruMain';
 }
 
@@ -191,6 +191,13 @@ class ZxpkruMainTemplate
 					background-position: center top;
 				}
 
+				.youtube {
+					display: block;
+					height: 140px;
+					width: 230px;
+					margin: 0 auto 5px;
+				}
+
 				.controls {
 					position: absolute;
 					bottom: 0;
@@ -233,7 +240,12 @@ class ZxpkruMainTemplate
 				<h1 class="heading"><?php echo $data['title']; ?></h1>
                 <?php if (!empty($data['image'])) {
                     echo '<div class="imagetop" style="background-image: url(\'' . $data['image'] . '\');" /></div>';
-                } ?>
+                } elseif (!empty($data['youtubeId'])) {
+                    ?>
+					<iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/<?php echo $data['youtubeId']?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					<?php
+                }
+                ?>
 				<div class="content"><?php echo $data['text']; ?></div>
 				<div class="controls">
 					<div class="button">Подробнее</div>

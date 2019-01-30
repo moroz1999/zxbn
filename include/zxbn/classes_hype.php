@@ -36,12 +36,11 @@ class HypeTemplate
 				}
 
 				.imagetop {
-					max-width: 100%;
-					max-height: 100px;
-					height: auto !important;
 					display: block;
-					float: none;
-					margin: 0 auto 10px;
+					height: 150px;
+					margin: 0 auto 5px;
+					background-size: cover;
+					background-position: center top;
 				}
 
 				#header {
@@ -61,6 +60,9 @@ class HypeTemplate
 					margin: 0 0 10px 0;
 					padding: 0;
 					font-family: 'PT Sans', Arial, sans-serif;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					overflow: hidden;
 				}
 
 				.controls {
@@ -104,7 +106,7 @@ class HypeTemplate
 			</header>
 			<h1 class="heading"><?php echo $data['title']; ?></h1>
             <?php if (!empty($data['image'])) {
-                echo '<img class="imagetop" src="' . $data['image'] . '" />';
+                echo '<div class="imagetop" style="background-image: url(\'' . $data['image'] . '\');" /></div>';
             } ?>
 			<div class="content"><?php echo $data['text']; ?></div>
 			<div class="controls"><span class="button">Читать статью</span></div>

@@ -136,6 +136,7 @@ class RssParser
                     $itemInfo['category'] = trim($item->category);
                     $itemInfo['creator'] = trim($item->children(self::namespaceDc)->creator);
                     $itemInfo['text'] = $this->htmlToPlainText($item->description);
+                    $itemInfo['youtubeId'] = '';
                     $itemInfo['image'] = '';
                     if ($this instanceof RssImageParser) {
                         $itemInfo['image'] = $this->getImageUrl($item);
@@ -158,6 +159,10 @@ class RssParser
                                     $itemInfo['image'] = $matches[2];
                                 }
                             }
+                        }
+                        preg_match('#www.youtube.com\/embed\/([A-Za-z0-9]*)#i', $item->description, $matches);
+                        if (isset($matches[1])) {
+                            $itemInfo['youtubeId'] = $matches[1];
                         }
                     }
 
