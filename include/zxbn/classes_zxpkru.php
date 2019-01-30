@@ -4,14 +4,15 @@ namespace Zxbn;
 
 class ZxpkruMainHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'https://zx-pk.ru/external.php?do=rss&type=newcontent&sectionid=1&days=120&count=10';
+    protected $listUrl = 'https://zx-pk.ru/external.php?do=rss&type=newcontent&sectionid=1&days=120&count=10';
     protected $limit = 5;
     protected $type = 'zxpkruMain';
+    protected $parserType = '\Zxbn\RssParser';
 }
 
 class ZxpkruHtmlBanner extends GroupedHtmlBanner
 {
-    protected $rssUrl = 'https://zx-pk.ru/external.php?type=RSS2&forumids=5,10,23,21,17,11,12,14,26,70,71,73,69,74,92,13,8,9,16';
+    protected $listUrl = 'https://zx-pk.ru/external.php?type=RSS2&forumids=5,10,23,21,17,11,12,14,26,70,71,73,69,74,92,13,8,9,16';
     protected $limit = 10;
     protected $type = 'zxpkru';
 }
@@ -194,7 +195,7 @@ class ZxpkruMainTemplate
 				.youtube {
 					display: block;
 					height: 140px;
-					width: 230px;
+					width: 240px;
 					margin: 0 auto 5px;
 				}
 

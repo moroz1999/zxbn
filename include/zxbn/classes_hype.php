@@ -4,9 +4,10 @@ namespace Zxbn;
 
 class HypeHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'http://hype.retroscene.org/rss/index/';
+    protected $listUrl = 'http://hype.retroscene.org/rss/index/';
     protected $limit = 3;
     protected $type = 'hype';
+    protected $parserType = '\Zxbn\RssParser';
 }
 
 class HypeTemplate

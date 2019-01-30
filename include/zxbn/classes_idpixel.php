@@ -4,14 +4,15 @@ namespace Zxbn;
 
 class IdpixelHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'http://idpixel.ru/rss/news.rss';
+    protected $listUrl = 'http://idpixel.ru/rss/news.rss';
     protected $limit = 5;
     protected $type = 'idpixel';
+    protected $parserType = '\Zxbn\RssParser';
 }
 
 class IdpixelZxHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'http://idpixel.ru/rss/news_zx.rss';
+    protected $listUrl = 'http://idpixel.ru/rss/news_zx.rss';
     protected $limit = 5;
     protected $type = 'idpixelZx';
 }

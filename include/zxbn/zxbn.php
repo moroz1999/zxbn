@@ -6,7 +6,7 @@ abstract class HtmlBanner
 {
     protected $cacheDir;
     protected $useCache = true;
-    protected $rssUrl = true;
+    protected $listUrl = true;
     protected $limit = 5;
     protected $type;
     protected $trackingLink;
@@ -61,18 +61,18 @@ abstract class HtmlBanner
         $htmlGenerator->setCacheDir($this->cacheDir);
 
         if (!$this->useCache || !$htmlGenerator->isCacheValid($bannerNumber)) {
-            if ($this->rssUrl) {
-
+            if ($this->listUrl) {
                 if ($this->parserType !== null) {
                     $className = $this->parserType;
-                    $rssParser = new $className();
-                } else {
-                    $rssParser = new RssParser();
-                }
+                    /**
+                     * @var Parser $contentParser
+                     */
+                    $contentParser = new $className();
 
-                if ($data = $rssParser->getData($this->rssUrl, $this->limit)) {
-                    $htmlGenerator->setData($data);
-                    $htmlGenerator->generate();
+                    if ($data = $contentParser->getData($this->listUrl, $this->limit)) {
+                        $htmlGenerator->setData($data);
+                        $htmlGenerator->generate();
+                    }
                 }
             }
         }
@@ -95,7 +95,43 @@ abstract class Template
     abstract public function render($data, $trackingLink);
 }
 
-class RssParser
+class Downloader
+{
+    protected function download($url)
+    {
+        $curlHandle = curl_init();
+        curl_setopt($curlHandle, CURLOPT_URL, $url);
+        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 2);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 0);
+        $result = curl_exec($curlHandle);
+        curl_close($curlHandle);
+        return $result;
+    }
+}
+
+interface Parser
+{
+    public function getData($url, $limit);
+}
+
+abstract class HtmlParser extends Downloader implements Parser
+{
+    abstract function parseHtml($html);
+
+    public function getData($url, $limit)
+    {
+        if ($html = $this->download($url)) {
+            return $this->parseHtml($html);
+        }
+        return false;
+    }
+
+}
+
+class RssParser extends Downloader implements Parser
 {
     const namespaceDc = 'http://purl.org/dc/elements/1.1/';
     const namespaceItunes = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
@@ -104,16 +140,7 @@ class RssParser
     public function getData($url, $limit)
     {
         $data = array();
-
-        $curlHandle = curl_init();
-        curl_setopt($curlHandle, CURLOPT_URL, $url);
-        curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 2);
-        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
-
-        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 0);
-        if ($rss = curl_exec($curlHandle)) {
-
+        if ($rss = $this->download($url)) {
             libxml_use_internal_errors(true);
             if ($xml = simplexml_load_string($rss)) {
                 $xml->registerXPathNamespace('dc', self::namespaceDc);
@@ -158,11 +185,17 @@ class RssParser
                                 if (isset($matches[2])) {
                                     $itemInfo['image'] = $matches[2];
                                 }
+                                preg_match('#www.youtube.com\/embed\/([A-Za-z0-9]*)#i', $html, $matches);
+                                if (isset($matches[1])) {
+                                    $itemInfo['youtubeId'] = $matches[1];
+                                }
                             }
                         }
-                        preg_match('#www.youtube.com\/embed\/([A-Za-z0-9]*)#i', $item->description, $matches);
-                        if (isset($matches[1])) {
-                            $itemInfo['youtubeId'] = $matches[1];
+                        if (!$itemInfo['youtubeId']) {
+                            preg_match('#www.youtube.com\/embed\/([A-Za-z0-9]*)#i', $item->description, $matches);
+                            if (isset($matches[1])) {
+                                $itemInfo['youtubeId'] = $matches[1];
+                            }
                         }
                     }
 
@@ -171,7 +204,6 @@ class RssParser
                 }
             }
         }
-        curl_close($curlHandle);
         return $data;
     }
 

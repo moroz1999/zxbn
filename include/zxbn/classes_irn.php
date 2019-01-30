@@ -2,15 +2,23 @@
 
 namespace Zxbn;
 
-class EmulateHtmlBanner extends HtmlBanner
+class IrnHtmlBanner extends HtmlBanner
 {
-    protected $listUrl = 'https://emulate.su/feed/';
+    protected $listUrl = 'http://www.indieretronews.com/search/label/Zx%20Spectrum';
     protected $limit = 5;
-    protected $type = 'emulate';
-    protected $parserType = '\Zxbn\RssParser';
+    protected $type = 'irn';
+    protected $parserType = '\Zxbn\IrnParser';
 }
 
-class EmulateTemplate
+class IrnParser extends HtmlParser
+{
+    public function parseHtml($html)
+    {
+        $data = false;
+    }
+}
+
+class IrnTemplate
 {
     public function render($data, $trackingLink)
     {
@@ -42,13 +50,6 @@ class EmulateTemplate
 					margin: 0 auto 5px;
 					background-size: cover;
 					background-position: center;
-				}
-
-				.youtube {
-					display: block;
-					height: 140px;
-					width: 240px;
-					margin: 0 auto 5px;
 				}
 
 				.header {
@@ -126,13 +127,7 @@ class EmulateTemplate
 			<h1 class="heading"><?php echo $data['title']; ?></h1>
             <?php if (!empty($data['image'])) {
                 echo '<div class="imagetop" style="background-image: url(\'' . $data['image'] . '\');" /></div>';
-            } elseif (!empty($data['youtubeId'])) {
-                ?>
-				<iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/<?php echo $data['youtubeId'] ?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <?php
-            }
-
-            ?>
+            } ?>
 			<div class="content"><?php echo $data['text']; ?></div>
 			<div class="controls">
 				<div class="button">Читать статью</div>

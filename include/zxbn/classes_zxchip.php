@@ -4,11 +4,10 @@ namespace Zxbn;
 
 class ZxchipHtmlBanner extends HtmlBanner
 {
-    protected $rssUrl = 'http://zxchip.ru/feed/podcast/';
+    protected $listUrl = 'http://zxchip.ru/feed/podcast/';
     protected $limit = 3;
     protected $type = 'zxchip';
     protected $parserType = '\Zxbn\ZxchipRssParser';
-
 }
 
 class ZxchipRssParser extends RssParser implements RssImageParser
