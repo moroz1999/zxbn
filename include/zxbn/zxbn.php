@@ -110,6 +110,17 @@ class Downloader
         curl_close($curlHandle);
         return $result;
     }
+
+    protected function addUtmParameters($link)
+    {
+        if (stripos($link, '?') === false) {
+            $link .= '?';
+        } elseif (stripos($link, '&') === false) {
+            $link .= '&';
+        }
+        $link .= 'utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn';
+        return $link;
+    }
 }
 
 interface Parser
@@ -124,7 +135,11 @@ abstract class HtmlParser extends Downloader implements Parser
     public function getData($url, $limit)
     {
         if ($html = $this->download($url)) {
-            return $this->parseHtml($html, $limit);
+            $data = $this->parseHtml($html, $limit);
+            foreach ($data as $key => $item) {
+                $data[$key]['link'] = $this->addUtmParameters($item['link']);
+            }
+            return $data;
         }
         return false;
     }
@@ -180,12 +195,7 @@ class RssParser extends Downloader implements Parser
 
                     $itemInfo['title'] = trim($item->title);
                     $itemInfo['link'] = trim($item->link);
-                    if (stripos($itemInfo['link'], '?') === false) {
-                        $itemInfo['link'] .= '?';
-                    } elseif (stripos($itemInfo['link'], '&') === false) {
-                        $itemInfo['link'] .= '&';
-                    }
-                    $itemInfo['link'] .= 'utm_source=zxbn&utm_medium=banner&utm_campaign=zxbn';
+                    $itemInfo['link'] = $this->addUtmParameters($itemInfo['link']);
                     $itemInfo['category'] = trim($item->category);
                     $itemInfo['creator'] = trim($item->children(self::namespaceDc)->creator);
                     $itemInfo['text'] = $this->htmlToPlainText($item->description);
@@ -248,7 +258,6 @@ class RssParser extends Downloader implements Parser
         $result = trim($result);
         return $result;
     }
-
 }
 
 interface RssImageParser
