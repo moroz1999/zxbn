@@ -5,25 +5,28 @@ namespace Zxbn;
 class IrnHtmlBanner extends HtmlBanner
 {
     protected $listUrl = 'http://www.indieretronews.com/search/label/Zx%20Spectrum';
-    protected $limit = 5;
+    protected $limit = 10;
     protected $type = 'irn';
     protected $parserType = '\Zxbn\IrnParser';
 }
 
 class IrnParser extends HtmlParser
 {
-    public function parseHtml($html)
+    public function parseHtml($html, $limit)
     {
         $data = [];
         if ($xPath = $this->getXpath($html)) {
             $postNodes = $xPath->query("//div[contains(@itemtype,'http://schema.org/BlogPosting')]");
             if ($postNodes->length) {
                 foreach ($postNodes as $postNode) {
+                    if (count($data) > $limit) {
+                        break;
+                    }
                     $itemInfo = [
                         'title' => '',
                         'image' => '',
-                        'text' => '',
-                        'link' => '',
+                        'text'  => '',
+                        'link'  => '',
                     ];
                     if ($h3Nodes = $xPath->query(".//h3[contains(@class, 'post-title')]", $postNode)) {
                         if ($h3Node = $h3Nodes->item(0)) {
@@ -68,70 +71,31 @@ class IrnTemplate
 					padding: 0;
 					margin: 0;
 					overflow: hidden;
-					font-size: 11px;
-					font-family: "Helvetica Neue", sans-serif;
+					font-family: "Verdana", sans-serif;
 					line-height: 1.5;
 					color: #eee;
 					position: relative;
-					background-color: #222;
+					background-color: #000;
 				}
 
 				.imagetop {
+					position: absolute;
+					top: 0;
+					left: 0;
 					display: block;
-					height: 140px;
-					margin: 0 auto 5px;
+					height: 256px;
+					width: 240px;
 					background-size: cover;
 					background-position: center;
 				}
 
-				.header {
-					background-color: #000;
-					height: 40px;
-					position: relative;
-					margin-bottom: 10px;
-				}
-
 				.logo {
 					display: block;
-					max-height: 37px;
-					max-width: 220px;
-					margin: 2px 10px 0 3px;
-					float: left;
-				}
-
-				.site-title {
-					padding-top: 2px;
-				}
-
-				h1, h1 a {
-					text-decoration: none;
-					font-family: "Helvetica Neue", sans-serif;
-					font-weight: normal;
-					color: #eee;
-					line-height: 1.1;
-					margin: 0;
-					font-size: 18px;
-					text-transform: uppercase;
-				}
-
-				.heading {
-					margin-left: 5px;
-					margin-right: 5px;
-					margin-bottom: 5px;
-				}
-
-				.controls {
+					width: 240px;
+					height: 63px;
 					position: absolute;
 					bottom: 0;
-					text-align: center;
-					background: linear-gradient(to bottom, rgba(34, 34, 34, 0), rgba(34, 34, 34, 1) 50%);
-					width: 100%;
-					padding-top: 40px;
-				}
-
-				.button {
-					color: #ddd;
-					text-decoration: underline;
+					left: 0;
 				}
 
 				.link_cover {
@@ -145,25 +109,43 @@ class IrnTemplate
 				}
 
 				.content {
-					padding: 0 5px;
+					padding: 5px 7px 0;
+					box-sizing: border-box;
+					top: 167px;
+					left: 10px;
+					right: 10px;
+					position: absolute;
+					font-size: 10px;
+					background-color: #303030;
+					border: solid 1px #444444;
+					border-radius: 10px;
+					height: 75px;
+					overflow: hidden;
+				}
+
+				.content::after {
+					display: block;
+					content: "";
+					position: absolute;
+					left: 7px;
+					bottom: 0;
+					right: 7px;
+					height: 22px;
+					background: linear-gradient(to top, #303030 30%, rgba(48, 48, 48, 0));
 				}
 			</style>
 		</head>
 		<body>
 		<div class="main">
-			<header class="header" role="banner">
-				<img class="logo" src="//emulate.su/wp-content/uploads/2017/01/cropped-emulate-su-logo.png" />
-				<h1 class="site-title"><a href="//emulate.su/" rel="home">EMULATE.SU</a></h1>
-				<div class="site-description">Добрые видеоигры!</div>
-			</header>
-			<h1 class="heading"><?php echo $data['title']; ?></h1>
             <?php if (!empty($data['image'])) {
-                echo '<div class="imagetop" style="background-image: url(\'' . $data['image'] . '\');" /></div>';
+                ?>
+			<div class="imagetop" style="background-image: url('<?php echo $data['image']; ?>  ');"></div><?php
             } ?>
 			<div class="content"><?php echo $data['text']; ?></div>
 			<div class="controls">
 				<div class="button">Читать статью</div>
 			</div>
+			<img class="logo" src="/images/irn/logo.png" />
 			<a
 				href="<?php echo $trackingLink . $data['link']; ?>"
 				onclick="window.open('<?php echo $trackingLink . $data['link']; ?>', '_blank');return false;" class="link_cover"></a>

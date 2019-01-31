@@ -137,8 +137,8 @@ class ZxchipTemplate
 					<div id="pic2"><img src="<?php echo $data['image']; ?>"></div>
 					<div id="pic1"><img src="<?php echo $data['image']; ?>"></div>
                 <?php } else { ?>
-					<div id="pic2"><img src="zxchip_images/slice4.png"></div>
-					<div id="pic1"><img src="zxchip_images/slice4.png"></div>
+					<div id="pic2"><img src="images/zxchip/slice4.png"></div>
+					<div id="pic1"><img src="images/zxchip/slice4.png"></div>
                 <?php } ?>
 				<div id="num">zx-chip <?php echo $data['number']; ?></div>
 				<div id="named"><?php echo $data['title']; ?></div>
@@ -146,9 +146,9 @@ class ZxchipTemplate
 					href="<?php echo $trackingLink . $data['link']; ?>"
 					onclick="window.open('<?php echo $trackingLink . $data['link']; ?>', '_blank');return false;" class="link_cover"></a>
 			</div>
-			<a href="<?php echo $trackingLink ?>http://zxchip.ru/feed/podcast/"><img id="rss" src="zxchip_images/slice1.png"></a>
-			<a href="<?php echo $trackingLink ?>https://vk.com/zxchip"><img id="vk" src="zxchip_images/slice2.png"></a>
-			<a href="<?php echo $trackingLink ?>https://t.me/zxchip"><img id="tg" src="zxchip_images/slice3.png"></a>
+			<a href="<?php echo $trackingLink ?>http://zxchip.ru/feed/podcast/"><img id="rss" src="images/zxchip/slice1.png"></a>
+			<a href="<?php echo $trackingLink ?>https://vk.com/zxchip"><img id="vk" src="images/zxchip/slice2.png"></a>
+			<a href="<?php echo $trackingLink ?>https://t.me/zxchip"><img id="tg" src="images/zxchip/slice3.png"></a>
 
 		</div>
 

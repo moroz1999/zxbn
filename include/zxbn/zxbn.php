@@ -119,12 +119,12 @@ interface Parser
 
 abstract class HtmlParser extends Downloader implements Parser
 {
-    abstract function parseHtml($html);
+    abstract function parseHtml($html, $limit);
 
     public function getData($url, $limit)
     {
         if ($html = $this->download($url)) {
-            return $this->parseHtml($html);
+            return $this->parseHtml($html, $limit);
         }
         return false;
     }
