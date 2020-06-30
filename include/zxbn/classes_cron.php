@@ -232,7 +232,7 @@ class CronPopTemplate
 								href="<?php echo $trackingLink . $info['link']; ?>"
 							><?php echo $info['title']; ?></a>
 						</h5>
-						<span class="price">£5.00</span>
+						<span class="price"><?php echo $info['price']; ?></span>
 						<a
 							onclick="window.open('<?php echo $trackingLink . $info['link']; ?>', '_blank');return false;"
 							href="<?php echo $trackingLink . $info['link']; ?>"

@@ -33,13 +33,15 @@ class IrnParser extends HtmlParser
                             $itemInfo['title'] = $h3Node->textContent;
                         }
                     }
-                    if ($imgNodes = $xPath->query(".//div[contains(@class, 'post-body')]/div[contains(@class, 'separator')]/a/img", $postNode)) {
-                        $imgNode = $imgNodes->item(0);
-                        $itemInfo['image'] = $imgNode->getAttribute('src');
+                    if ($imgNodes = $xPath->query(".//div[contains(@class, 'post-body')]//a/img", $postNode)) {
+                        if ($imgNode = $imgNodes->item(0)){
+				$itemInfo['image'] = $imgNode->getAttribute('src');
+			}
                     }
                     if ($contentNodes = $xPath->query(".//div[contains(@class, 'post-body')]", $postNode)) {
-                        $contentNode = $contentNodes->item(0);
-                        $itemInfo['text'] = $contentNode->textContent;
+                        if ($contentNode = $contentNodes->item(0)){
+				$itemInfo['text'] = $contentNode->textContent;
+			}
                     }
                     if ($aNodes = $xPath->query(".//div[contains(@class, 'jump-link')]/a", $postNode)) {
                         $aNode = $aNodes->item(0);
