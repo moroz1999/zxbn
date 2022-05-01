@@ -4,7 +4,7 @@ namespace Zxbn;
 
 class HypeHtmlBanner extends HtmlBanner
 {
-    protected $listUrl = 'http://hype.retroscene.org/rss/index/';
+    protected $listUrl = 'https://hype.retroscene.org/rss/index/';
     protected $limit = 3;
     protected $type = 'hype';
     protected $parserType = '\Zxbn\RssParser';
@@ -103,7 +103,7 @@ class HypeTemplate
 		<body>
 		<div class="main">
 			<header id="header" role="banner">
-				<img src="http://hype.retroscene.org/rnd-logo.php" />
+				<img src="https://hype.retroscene.org/plugins/rndlogo/images/hype-logo1/01.png" />
 			</header>
 			<h1 class="heading"><?php echo $data['title']; ?></h1>
             <?php if (!empty($data['image'])) {

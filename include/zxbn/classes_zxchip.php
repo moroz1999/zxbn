@@ -4,7 +4,7 @@ namespace Zxbn;
 
 class ZxchipHtmlBanner extends HtmlBanner
 {
-    protected $listUrl = 'http://zxchip.ru/feed/podcast/';
+    protected $listUrl = 'http://feeds.feedburner.com/ZxChipPodcast';
     protected $limit = 3;
     protected $type = 'zxchip';
     protected $parserType = '\Zxbn\ZxchipRssParser';
